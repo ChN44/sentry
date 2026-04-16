@@ -1,4 +1,6 @@
-/* Reset global para garantir que nada fique branco */
+/* ========================================
+   RESET GLOBAL
+   ======================================== */
 html, body {
   background-color: #000000 !important;
   margin: 0;
@@ -8,7 +10,10 @@ html, body {
   overflow: hidden; /* Evita scrolls desnecessários */
 }
 
-.auth-clean-page {
+/* ========================================
+   ESTRUTURA DA PÁGINA
+   ======================================== */
+.tela-verificacao {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -18,29 +23,32 @@ html, body {
   font-family: 'Inter', sans-serif;
 }
 
-/* Barra de progresso */
-.progress-bar-container {
+/* Barra de progresso no topo */
+.progresso-container {
   height: 4px;
   width: 100%;
   background-color: #1a1a1a;
 }
 
-.progress-bar-fill {
+.progresso-barra {
   height: 100%;
   width: 35%; 
   background-color: #38C75D;
   box-shadow: 0 0 10px rgba(56, 199, 93, 0.4);
 }
 
-.auth-clean-wrapper {
+/* Área central de conteúdo */
+.corpo-central {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Card central com o vidro bem escuro */
-.auth-card-clean {
+/* ========================================
+   CARD DE SEGURANÇA (Efeito Vidro)
+   ======================================== */
+.card-seguranca {
   width: 100%;
   max-width: 300px;
   padding: 40px;
@@ -50,31 +58,34 @@ html, body {
   text-align: center;
 }
 
-.auth-logo-clean img {
+.marca-logo img {
   height: 70px;
   margin-bottom: 24px;
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
 }
 
-.auth-header-clean h2 {
+.cabecalho-texto h2 {
   font-size: 22px;
   margin-bottom: 15px;
 }
 
-.mensagem-de-verificacao p {
+.instrucao-usuario p {
   font-size: 14px;
   color: #888;
   margin-bottom: 25px;
 }
 
-.otp-wrapper-clean {
+/* ========================================
+   CAMPOS DE CÓDIGO (OTP)
+   ======================================== */
+.area-codigo-otp {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
   margin-bottom: 32px;
 }
 
-.otp-input-clean {
+.campo-digito {
   width: 100%;
   height: 60px;
   background: #0a0a0a;
@@ -84,18 +95,27 @@ html, body {
   font-size: 20px;
   text-align: center;
   outline: none;
+  transition: border-color 0.3s ease;
 }
 
-.otp-input-clean:focus {
-  border-color: #38C75D; /* Cor da barra de progresso no foco */
+.campo-digito:focus {
+  border-color: #38C75D; /* Cor verde no foco */
 }
 
-.resend-text-clean {
+/* ========================================
+   AÇÕES E LINKS (RODAPÉ)
+   ======================================== */
+.acoes-rodape {
   font-size: 13px;
   color: #555;
 }
 
-.resend-text-clean a {
-  color: #38C75D; /* Verde para combinar com a barra */
+.acoes-rodape a {
+  color: #38C75D;
   text-decoration: none;
+  font-weight: 500;
+}
+
+.acoes-rodape a:hover {
+  text-decoration: underline;
 }

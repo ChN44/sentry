@@ -5,7 +5,7 @@
  * Descrição: Componente de tela de autenticação (2FA)
  * Responsabilidades:
  *   - Exibir formulário de verificação por OTP (One-Time Password)
- *   - Mascarar e exibir apenas os últimos 4 dígitos do telefone
+ *   - Mascarar o email para privacidade do usuário
  *   - Renderizar 4 campos de entrada para o código de 4 dígitos
  * Rota: /autenticacao
  * ========================================
@@ -67,66 +67,68 @@ const Autenticacao: React.FC = () => {
 
   // ===== RENDER =====
   return (
-    <div className="auth-clean-page">
+    <div className="tela-verificacao">
       {/* Barra de progresso da autenticação */}
-      <div className="progress-bar-container">
-        <div className="progress-bar-fill"></div>
+      <div className="progresso-container">
+        <div className="progresso-barra"></div>
       </div>
 
       {/* Container principal da tela */}
-      <div className="auth-clean-wrapper">
+      <div className="corpo-central">
         {/* Card do formulário de autenticação */}
-        <div className="auth-card-clean">
+        <div className="card-seguranca">
           {/* Logo da aplicação */}
-          <div className="auth-logo-clean">
+          <div className="marca-logo">
             <img src={sentry} alt="Logo" />
           </div>
 
           {/* Título da tela */}
-          <div className="auth-header-clean">
+          <header className="cabecalho-texto">
             <h2>Verificação</h2>
-          </div>
+          </header>
 
           {/* Mensagem explicativa com email mascarado */}
-          <div className="mensagem-de-verificacao">
+          <div className="instrucao-usuario">
             <p>
-              Enviamos um código de 4 dígitos para: {mascararEmail(email)}
-              <br />
+              Enviamos um código de 4 dígitos para: <br />
+              <strong>{mascararEmail(email)}</strong>
             </p>
           </div>
 
           {/* Campos de entrada para os 4 dígitos do código OTP */}
-          <div className="otp-wrapper-clean">
+          <div className="area-codigo-otp">
             <input
               type="text"
               maxLength={1}
-              className="otp-input-clean"
+              className="campo-digito"
               placeholder="-"
             />
             <input
               type="text"
               maxLength={1}
-              className="otp-input-clean"
+              className="campo-digito"
               placeholder="-"
             />
             <input
               type="text"
               maxLength={1}
-              className="otp-input-clean"
+              className="campo-digito"
               placeholder="-"
             />
             <input
               type="text"
               maxLength={1}
-              className="otp-input-clean"
+              className="campo-digito"
               placeholder="-"
             />
           </div>
 
           {/* Link para reenviar o código */}
-          <p className="resend-text-clean">
-            Não recebeu o código? <a href="#">Reenviar</a>
-          </p>
+          <div className="acoes-rodape">
+            <p>
+              Não recebeu o código? <a href="#">Reenviar</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
