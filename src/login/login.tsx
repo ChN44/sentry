@@ -13,7 +13,7 @@
  * ========================================
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, type ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import "./estilologin.css";
 
@@ -59,8 +59,8 @@ const Login: React.FC = () => {
   /** Índice do slide atual do carousel */
   const [indiceAtual, setIndiceAtual] = useState(0);
 
-  /** Valor do telefone digitado no input */
-  const [telefone, setTelefone] = useState("");
+  /** Valor do email digitado no input */
+  const [email, setEmail] = useState<string>("");
 
   /** Estado de carregamento ao processar o formulário */
   const [loading, setLoading] = useState(false);
@@ -92,52 +92,42 @@ const Login: React.FC = () => {
 
   // ===== FUNÇÕES AUXILIARES =====
   /**
-   * FUNÇÃO: handlePhoneChange
-   * Gerencia a mudança e formatação automática do input de telefone
-   * Formatos aplicados: (DD) 9XXXX-XXXX
+   * FUNÇÃO: handleEmailChange
+   * Gerencia a mudança do input de email
+   * Remove automaticamente espaços em branco (incluindo tabs e quebras de linha)
    */
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
-    value = value.replace(/\D/g, "");
-
-    if (value.length > 11) {
-      value = value.slice(0, 11);
-    }
-    if (value.length > 0) {
-      value = value.replace(/^(\d{2})(\d)/, "($1) $2");
-    }
-    if (value.length > 9) {
-      value = value.replace(/(\d{5})(\d)/, "$1-$2");
-    }
-
-    setTelefone(value);
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const value = e.target.value;
+    // Remove todos os espaços: \s captura qualquer espaço (incluindo tabs e quebras de linha)
+    // O 'g' garante que vai remover TODOS os espaços
+    const valueWithoutSpaces = value.replace(/\s/g, "");
+    setEmail(valueWithoutSpaces);
     if (notificacao) setNotificacao(null);
   };
 
   /**
-   * FUNÇÃO: isValidPhone
-   * Valida se o telefone possui exatamente 11 dígitos (DDD + 9 dígitos)
-   * Padrão Brasil: (XX) 9XXXX-XXXX
+   * FUNÇÃO: isValidEmail
+   * Valida se o email possui formato correto
+   * Padrão: usuario@dominio.com
    */
-  const isValidPhone = (phone: string): boolean => {
-    const digitos = phone.replace(/\D/g, "");
-    return digitos.length === 11 && /^\d{11}$/.test(digitos);
+  const isValidEmail = (emailValue: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(emailValue);
   };
 
   /**
    * FUNÇÃO: handleComecar
    * Processa o clique no botão "Começar"
-   * - Valida o número de telefone
+   * - Valida o email
    * - Exibe erro se inválido
    * - Navega para a tela de autenticação se válido
    */
   const handleComecar = async () => {
-    // Validação do telefone
-    if (!isValidPhone(telefone)) {
+    // Validação do email
+    if (!isValidEmail(email)) {
       setNotificacao({
         tipo: "erro",
-        mensagem:
-          "Por favor, insira um número de WhatsApp válido com DDD (11 dígitos).",
+        mensagem: "Por favor, insira um email válido.",
       });
       return;
     }
@@ -146,8 +136,8 @@ const Login: React.FC = () => {
       setLoading(true);
       // Pequeno delay para simular processamento
       await new Promise((resolve) => setTimeout(resolve, 500));
-      // Navega para autenticação passando o telefone como estado
-      navigate("/autenticacao", { state: { telefone } });
+      // Navega para autenticação passando o email como estado
+      navigate("/autenticacao", { state: { email } });
     } catch {
       setNotificacao({
         tipo: "erro",
@@ -185,26 +175,21 @@ const Login: React.FC = () => {
 
           {/* Título e descrição */}
           <div className="header-text">
-            <h1>Qual seu Whatsapp?</h1>
+            <h1>Qual seu email?</h1>
             <p>Inicie seu cadastro ou acesse sua conta.</p>
           </div>
 
           {/* Grupo de entrada de telefone */}
           <div className="input-group">
             {/* Seletor de país */}
-            <div className="country-selector">
-              <span className="flag">🇧🇷</span>
-              <span className="code">+55</span>
-            </div>
-
             {/* Input para número de telefone */}
             <input
-              type="tel"
-              maxLength={15}
-              placeholder="(00) 00000-0000"
-              className="phone-input"
-              value={telefone}
-              onChange={handlePhoneChange}
+                type="email"
+                maxLength={100}
+                placeholder="seu@email.com"
+                className="email-input"
+                value={email}
+                onChange={handleEmailChange}
             />
           </div>
 

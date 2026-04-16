@@ -25,22 +25,44 @@ const Autenticacao: React.FC = () => {
   const location = useLocation();
 
   // ===== ESTADOS E VARIÁVEIS =====
-  // Recupera o telefone passado pela rota de login
-  const telefone = location.state?.telefone || "(Telefone não informado)";
+  // Recupera o email passado pela rota de login
+  const email = location.state?.email || "(Email não informado)";
 
   // ===== FUNÇÕES AUXILIARES =====
   /**
-   * Mascara o telefone mostrando apenas os 4 últimos dígitos
-   * Exemplo: "11987654321" → "4321"
+   * Mascara o email de forma segura, mostrando apenas caracteres essenciais
+   * @param emailValue - Email a ser mascarado
+   * @returns Email mascarado no padrão: "u***@dominio.com"
+   *
+   * Exemplos:
+   * - "usuario@gmail.com" → "u***@gmail.com"
+   * - "a@domain.co" → "a***@domain.co"
+   * - "inválido" → "[Email inválido]"
    */
-  const mascararTelefone = (tel: string) => {
-    // Extrai apenas os números
-    const apenasNumeros = tel.replace(/\D/g, "");
-    // Retorna vazio se não houver 4 dígitos
-    if (apenasNumeros.length < 4) return "";
-    // Pega apenas os últimos 4 dígitos
-    const ultimos4 = apenasNumeros.slice(-4);
-    return `${ultimos4}`;
+  const mascararEmail = (emailValue: string): string => {
+    // Validação básica
+    if (!emailValue || typeof emailValue !== "string") {
+      return "[Email não informado]";
+    }
+
+    const trimmed = emailValue.trim();
+    const atIndex = trimmed.indexOf("@");
+
+    // Verifica se contém @ (formato básico de email)
+    if (atIndex <= 0 || atIndex === trimmed.length - 1) {
+      return "[Email inválido]";
+    }
+
+    const usuario = trimmed.substring(0, atIndex);
+    const dominio = trimmed.substring(atIndex);
+
+    // Se o username tem apenas 1 caractere, mostra ele + asteriscos
+    if (usuario.length <= 1) {
+      return `${usuario}***${dominio}`;
+    }
+
+    // Caso geral: mostra primeiro caractere + asteriscos + @ + domínio
+    return `${usuario.charAt(0)}${"*".repeat(Math.max(3, usuario.length - 1))}${dominio}`;
   };
 
   // ===== RENDER =====
@@ -65,11 +87,10 @@ const Autenticacao: React.FC = () => {
             <h2>Verificação</h2>
           </div>
 
-          {/* Mensagem explicativa com telefone mascarado */}
+          {/* Mensagem explicativa com email mascarado */}
           <div className="mensagem-de-verificacao">
             <p>
-              Enviamos um código de 4 dígitos para o numero com final de:{" "}
-              {mascararTelefone(telefone)}
+              Enviamos um código de 4 dígitos para: {mascararEmail(email)}
               <br />
             </p>
           </div>

@@ -102,7 +102,7 @@
 }
 
 .country-selector,
-.phone-input {
+.email-input {
   background-color: transparent;
   border: 1px solid #2a2a2a;
   border-radius: 12px;
@@ -122,17 +122,17 @@
   color: #888888;
 }
 
-.phone-input {
+.email-input {
   flex: 1;
   outline: none;
   transition: border-color 0.2s;
 }
 
-.phone-input:focus {
+.email-input:focus {
   border-color: #555555;
 }
 
-.phone-input::placeholder {
+.email-input::placeholder {
   color: #666666;
 }
 
