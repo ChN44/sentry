@@ -1,0 +1,572 @@
+.container-geral {
+  display: flex;
+  height: 100vh;
+  background-color: #050505;
+  color: #e5e5e5;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.menu-lateral {
+  width: 250px;
+  background-color: #0a0a0a;
+  border-right: 1px solid #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  position: relative;
+}
+
+/* Responsividade para tablets */
+@media (max-width: 768px) {
+  .menu-lateral {
+    width: 200px;
+    padding: 16px;
+  }
+  
+  .logo-do-app {
+    margin-bottom: 24px;
+  }
+  
+  .links-navegacao {
+    gap: 4px;
+  }
+  
+  .item-menu {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+/* Responsividade para mobile */
+@media (max-width: 480px) {
+  .container-geral {
+    flex-direction: column;
+  }
+  
+  .menu-lateral {
+    width: 100%;
+    flex-direction: row;
+    padding: 12px;
+    border-right: none;
+    border-bottom: 1px solid #1a1a1a;
+    height: auto;
+  }
+  
+  .logo-do-app {
+    margin-bottom: 0;
+  }
+  
+  .links-navegacao {
+    flex-direction: row;
+    gap: 8px;
+    overflow-x: auto;
+    flex: 1;
+  }
+  
+  .item-menu {
+    white-space: nowrap;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .conteudo-principal {
+    overflow-x: hidden;
+  }
+  
+  .topo-da-pagina {
+    padding: 16px 20px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .saudacao-usuario h1 {
+    font-size: 20px;
+  }
+  
+  .botoes-topo {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .layout-do-painel {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+  
+  .coluna-ia {
+    width: 100%;
+    height: 300px;
+  }
+  
+  .grade-resumo {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .valor-cartao {
+    font-size: 20px;
+  }
+  
+  .formulario-transacao {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .acoes-extrato {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .botao-adicionar {
+    width: 100%;
+  }
+  
+  .busca-extrato {
+    width: 100%;
+  }
+  
+  .tabela-financeira th,
+  .tabela-financeira td {
+    padding: 8px 0;
+    font-size: 12px;
+  }
+}
+
+/* Responsividade para tablets (vertical) */
+@media (max-width: 1024px) {
+  .grade-resumo {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .formulario-transacao {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .layout-do-painel {
+    gap: 16px;
+  }
+  
+  .coluna-ia {
+    width: 280px;
+  }
+}
+
+.logo-do-app {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 40px;
+}
+
+
+
+.links-navegacao {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  color: #a3a3a3;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+}
+
+.item-menu:hover, .item-menu.ativo {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.conteudo-principal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.topo-da-pagina {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 40px 0;
+}
+
+.saudacao-usuario h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.saudacao-usuario p {
+  margin: 4px 0 0;
+  color: #a3a3a3;
+  font-size: 14px;
+}
+
+.botoes-topo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.botao-circular {
+  background: #1a1a1a;
+  border: 1px solid #262626;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.botao-circular:hover {
+  background: #262626;
+}
+
+.foto-perfil img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #262626;
+}
+
+.layout-do-painel {
+  display: flex;
+  gap: 24px;
+  padding: 32px 40px;
+}
+
+.coluna-financeira {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.coluna-ia {
+  width: 320px;
+}
+
+.cartao-info {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.grade-resumo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.titulo-cartao {
+  font-size: 14px;
+  color: #a3a3a3;
+}
+
+.valor-cartao {
+  margin: 8px 0 0;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.cor-verde { color: #10b981 !important; }
+.cor-vermelha { color: #ef4444 !important; }
+.texto-direita { text-align: right; }
+.fonte-bold { font-weight: 600; color: #ffffff; }
+
+.titulo-sessao {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.botao-link {
+  background: none;
+  border: none;
+  color: #7c3aed;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.botao-link:hover {
+  text-decoration: underline;
+}
+
+.topo-lista, .topo-lista-extrato {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tabela-financeira {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela-financeira th, .tabela-financeira td {
+  padding: 12px 0;
+  border-bottom: 1px solid #1a1a1a;
+  font-size: 14px;
+  color: #d4d4d4;
+  text-align: left;
+}
+
+.tabela-financeira th {
+  color: #737373;
+  font-weight: 500;
+}
+
+.acoes-extrato {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.botao-adicionar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #7c3aed;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.botao-adicionar:hover {
+  background: #6d28d9;
+}
+
+.busca-extrato {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1a1a1a;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #262626;
+}
+
+.busca-extrato input {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  outline: none;
+  font-size: 14px;
+}
+
+.formulario-transacao {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  gap: 10px;
+  background: #111;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-left: 4px solid #7c3aed;
+}
+
+.erro-mensagem {
+  grid-column: 1 / -1;
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border-left: 3px solid #ef4444;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.campo-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo-formulario label {
+  font-size: 12px;
+  color: #a3a3a3;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.formulario-transacao input {
+  background: #1a1a1a;
+  border: 1px solid #262626;
+  color: #ffffff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.formulario-transacao input:focus {
+  border-color: #7c3aed;
+  background: #1a1a1a;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.btn-salvar {
+  background: #7c3aed;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-salvar:hover:not(:disabled) {
+  background: #6d28d9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.btn-salvar:disabled {
+  background: #555;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.etiqueta-generica {
+  background: #222;
+  color: #aaa;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  text-transform: uppercase;
+  border: 1px solid #333;
+}
+
+.botao-excluir {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.botao-excluir:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}
+
+.caixa-chat-ia {
+  background: linear-gradient(180deg, #0a0a0a 0%, #110c1c 100%);
+  border: 1px solid #2d1b4e;
+  border-radius: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.topo-chat {
+  padding: 20px;
+  border-bottom: 1px solid #2d1b4e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #a78bfa;
+  font-weight: bold;
+}
+
+.historico-mensagens {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.msg-ia {
+  background: #2d1b4e;
+  color: #ede9fe;
+  padding: 12px;
+  border-radius: 12px 12px 12px 0;
+  font-size: 14px;
+  width: fit-content;
+}
+
+.campo-texto-chat {
+  padding: 20px;
+  display: flex;
+  gap: 8px;
+}
+
+.input-chat {
+  flex: 1;
+  background: #1a1a1a;
+  border: 1px solid #2d1b4e;
+  border-radius: 8px;
+  padding: 12px;
+  color: #ffffff;
+  outline: none;
+}
+
+.botao-enviar-chat {
+  background: #7c3aed;
+  border: none;
+  border-radius: 8px;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.botao-enviar-chat:hover {
+  background: #6d28d9;
+}
+
+/* Acessibilidade e utilidades */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.texto-vazio {
+  text-align: center;
+  color: #737373;
+  padding: 32px 12px !important;
+  font-style: italic;
+}

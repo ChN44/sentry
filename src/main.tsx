@@ -4,9 +4,9 @@
  * ========================================
  * Descrição: Arquivo principal e ponto de entrada da aplicação
  * Responsabilidades:
- *   - Configurar o sistema de rotas (React Router)
- *   - Montar o aplicativo React no DOM
- *   - Definir todas as rotas disponíveis
+ * - Configurar o sistema de rotas (React Router)
+ * - Montar o aplicativo React no DOM
+ * - Definir todas as rotas disponíveis
  * ========================================
  */
 
@@ -15,6 +15,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./login/login";
 import Autenticacao from "./Autenticacao/autenticacao";
+import Dashboard from "./Dashboard/Dashboard"; // Importação do novo componente Dashboard
 
 /**
  * COMPONENTE: App
@@ -29,6 +30,9 @@ export function App() {
 
         {/* Rota 2: Tela de Autenticação (verificação por OTP) */}
         <Route path="/autenticacao" element={<Autenticacao />} />
+
+        {/* Rota 3: Tela de Dashboard (gestão financeira e IA) */}
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
