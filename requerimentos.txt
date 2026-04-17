@@ -1,0 +1,8 @@
+1- de npm install
+2- mude para o terminal para gitbash e de cd backend
+3- de os pip install
+python.exe -m pip install --upgrade pip
+pip install python-dotenv
+pip install fastapi uvicorn python-dotenv flask-cors
+4-rode o backend end com python autenticacao.py
+5- crie outro terminal e rode npm run dev
