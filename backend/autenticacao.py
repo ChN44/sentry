@@ -34,7 +34,7 @@ def enviar_email_servidor(email_destino, codigo):
     sua_senha_de_app = "kzpqgxlsfledjbmu"
 
     msg = EmailMessage()
-    msg.set_content(f"Seu codigo de verificacao e: {codigo} \n Putão agora ta casado")
+    msg.set_content(f"Seu codigo de verificacao é : {codigo}")
     msg['Subject'] = 'Codigo de Acesso - Sistema Sentry'
     msg['From'] = seu_email
     msg['To'] = email_destino
