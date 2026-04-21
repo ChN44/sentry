@@ -3,6 +3,10 @@
 3- de os pip install
 python.exe -m pip install --upgrade pip
 pip install python-dotenv
+pip install fastapi uvicorn python-dotenv pydantic
 pip install fastapi uvicorn python-dotenv flask-cors
 4-rode o backend end com python autenticacao.py
-5- crie outro terminal e rode npm run dev
+5- crie outro terminal e rode npm run dev(
+vvvvv site pra verificar a api vvvvvvv
+http://localhost:8000/docs
+)
