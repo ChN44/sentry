@@ -16,6 +16,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./login/login";
 import Autenticacao from "./Autenticacao/autenticacao";
 import Dashboard from "./Dashboard/Dashboard"; // Importação do novo componente Dashboard
+import Cadastro from "./cadastro/cadastro"; // Importação do novo componente Dashboard
 
 /**
  * COMPONENTE: App
@@ -30,6 +31,9 @@ export function App() {
 
         {/* Rota 2: Tela de Autenticação (verificação por OTP) */}
         <Route path="/autenticacao" element={<Autenticacao />} />
+
+          {/* Rota 3: Tela de Cadastro (entrada de nome e email) */}
+        <Route path="/cadastro" element={<Cadastro />} />
 
         {/* Rota 3: Tela de Dashboard (gestão financeira e IA) */}
         <Route path="/dashboard" element={<Dashboard />} />

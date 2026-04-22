@@ -7,39 +7,59 @@
 }
 
 /* 1. Mágica da transição de cores do fundo */
-@property --wave-color-1 { syntax: '<color>'; initial-value: #000000; inherits: true; }
-@property --wave-color-2 { syntax: '<color>'; initial-value: #000000; inherits: true; }
-@property --wave-color-3 { syntax: '<color>'; initial-value: #000000; inherits: true; }
+@property --wave-color-1 {
+  syntax: "<color>";
+  initial-value: #000000;
+  inherits: true;
+}
+@property --wave-color-2 {
+  syntax: "<color>";
+  initial-value: #000000;
+  inherits: true;
+}
+@property --wave-color-3 {
+  syntax: "<color>";
+  initial-value: #000000;
+  inherits: true;
+}
 
 .cadastro-container {
   display: flex;
   height: 100vh;
   width: 100vw;
   color: #ffffff;
-  font-family: 'Inter', -apple-system, sans-serif;
-  overflow: hidden; 
+  font-family:
+    "Inter",
+    -apple-system,
+    sans-serif;
+  overflow: hidden;
 
   /* UPGRADE: Agora o gradiente usa as 3 cores espalhadas, sem usar preto rígido nas pontas */
   background: linear-gradient(
-    -60deg, 
-    var(--wave-color-3) 0%, 
-    var(--wave-color-1) 25%, 
-    var(--wave-color-2) 50%, 
-    var(--wave-color-1) 75%, 
+    -60deg,
+    var(--wave-color-3) 0%,
+    var(--wave-color-1) 25%,
+    var(--wave-color-2) 50%,
+    var(--wave-color-1) 75%,
     var(--wave-color-3) 100%
   );
-  background-size: 300% 300%; 
-  animation: liquidMetalWave 12s ease-in-out infinite alternate; 
-  
+  background-size: 300% 300%;
+  animation: liquidMetalWave 12s ease-in-out infinite alternate;
+
   /* Transição idêntica ao tempo das imagens (1.5s) para sincronia perfeita */
-  transition: --wave-color-1 1.5s ease-in-out, 
-              --wave-color-2 1.5s ease-in-out, 
-              --wave-color-3 1.5s ease-in-out;
+  transition:
+    --wave-color-1 1.5s ease-in-out,
+    --wave-color-2 1.5s ease-in-out,
+    --wave-color-3 1.5s ease-in-out;
 }
 
 @keyframes liquidMetalWave {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 /* --- Lado Esquerdo (Formulário) --- */
@@ -59,18 +79,18 @@
   max-width: 420px;
   display: flex;
   flex-direction: column;
-  
-  background: rgba(0, 0, 0, 0.4); 
-  backdrop-filter: blur(16px); 
-  -webkit-backdrop-filter: blur(16px); 
-  padding: 40px; 
-  border-radius: 24px; 
-  border: 1px solid rgba(255, 255, 255, 0.05); 
+
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .project-logo {
-  height: 50px; 
-  width: auto; 
+  height: 50px;
+  width: auto;
   object-fit: contain;
   display: block;
 }
@@ -79,7 +99,6 @@
   display: flex;
   justify-content: flex-start;
   width: 100%;
-  margin-left: center;
   margin-bottom: 20px;
 }
 
@@ -110,7 +129,10 @@
   padding: 14px 16px;
   font-size: 14px;
   color: #ffffff;
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    sans-serif;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -178,7 +200,10 @@
   cursor: pointer;
   margin-bottom: 12px;
   transition: background-color 0.2s;
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    sans-serif;
 }
 
 .btn-secondary:hover {
@@ -223,8 +248,8 @@
   height: 100%;
   object-fit: cover;
   pointer-events: none;
-  opacity: 0; 
-  transition: opacity 1.5s ease-in-out; 
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
 }
 
 .background-image.active {
@@ -316,4 +341,72 @@
     font-size: 13px;
     padding: 12px;
   }
+}
+
+/* --- Selo LGPD --- */
+.lgpd-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px auto 0 auto;
+  width: fit-content;
+}
+
+.lgpd-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #22c55e; 
+}
+
+.lgpd-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8; 
+}
+
+/* ========================================
+   ESTILOS DO AVATAR REROLL
+   ======================================== */
+.avatar-reroll-container {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 24px auto;
+  position: relative;
+  width: fit-content;
+}
+
+.avatar-image-reroll {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #202124; /* Cor da borda que combina com seu tema */
+  background-color: #fff;
+}
+
+.avatar-reroll-btn {
+  position: absolute;
+  bottom: 0px;
+  right: -5px;
+  background-color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+}
+
+.avatar-reroll-btn:hover {
+  transform: scale(1.1); /* Efeito visual ao passar o mouse */
+}
+
+.avatar-reroll-btn:active {
+  transform: scale(0.9); /* Efeito visual ao clicar */
 }
