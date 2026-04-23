@@ -86,11 +86,9 @@ const Login: React.FC = () => {
   };
 
   /**
-   * FUNÇÃO: handleComecar (MODIFICADA PARA O BACKEND)
-   * Agora fazemos o POST real para a tua API FastAPI
+   * FUNÇÃO: handleComecar (LÓGICA DE BACKEND ATUALIZADA)
    */
   const handleComecar = async () => {
-    // 1. Validação inicial do lado do frontend
     if (!isValidEmail(email)) {
       setNotificacao({
         tipo: "erro",
@@ -102,37 +100,36 @@ const Login: React.FC = () => {
     try {
       setLoading(true);
       
-      // 2. Faz o pedido POST para o backend FastAPI
       const resposta = await fetch("http://localhost:8000/api/enviar-codigo", {
-        method: "POST", // Avisamos que queremos enviar dados
+        method: "POST",
         headers: {
-          "Content-Type": "application/json", // O backend espera receber um JSON
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: email }), // Convertemos o email no formato esperado pelo Pydantic
+        body: JSON.stringify({ email: email }),
       });
 
-      // 3. Lê o que o servidor respondeu
       const dados = await resposta.json();
 
-      // 4. Verifica se a resposta do servidor foi de sucesso (códigos 200-299)
       if (resposta.ok) {
-        // Sucesso! O código foi enviado. Navegamos para a página de verificar o código
-        navigate("/autenticacao", { state: { email } });
+        // Se o backend retornar status de redirecionamento (usuário não existe)
+        if (dados.status === "redirecionar") {
+          navigate("/cadastro", { state: { email } });
+        } else {
+          // Caso padrão: usuário existe e código foi enviado
+          navigate("/autenticacao", { state: { email } });
+        }
       } else {
-        // Ocorreu um erro no backend (ex: erro de servidor 500)
         setNotificacao({
           tipo: "erro",
           mensagem: dados.detail || "Erro ao processar. Tente novamente.",
         });
       }
     } catch (erro) {
-      // Este catch captura erros de rede (ex: esqueceste-te de ligar o FastAPI)
       setNotificacao({
         tipo: "erro",
         mensagem: "Erro de conexão com o servidor. O backend está ligado?",
       });
     } finally {
-      // Desliga o botão de "Processando..."
       setLoading(false);
     }
   };

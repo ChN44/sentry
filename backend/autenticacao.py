@@ -1,20 +1,31 @@
 import smtplib
 import random
 import os
+import mysql.connector
 from email.message import EmailMessage
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel # Importado para o esquema de cadastro
 
-# Importação dos schemas que criaste na pasta 'schemas'
-from schemas.auth import LoginRequest, VerificarRequest
 
-# 1. Configuração de Ambiente
-load_dotenv() # Carrega as variáveis do .env
+class CadastroRequest(BaseModel):
+    nome: str
+    email: str
+    cpf: str
+    avatar_index: int
+
+class LoginRequest(BaseModel):
+    email: str
+
+class VerificarRequest(BaseModel):
+    email: str
+    codigo: str
+
+load_dotenv()
 
 app = FastAPI()
 
-# 2. Configuração do CORS (Permite a comunicação com o React)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], 
@@ -23,24 +34,62 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 3. Armazenamento Temporário (Dicionário em memória)
-# Formato esperado: {"email@teste.com": "1234"}
 armazenamento_codigos = {}
 
+
+
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="SENTRY"
+    )
+
+def verificar_usuario_existe(email: str):
+    db = get_db_connection()
+    cursor = db.cursor()
+    cursor.execute("SELECT EMAIL FROM USUARIO WHERE EMAIL = %s", (email,))
+    usuario = cursor.fetchone()
+    cursor.close()
+    db.close()
+    return usuario is not None
+
+def cadastrar_novo_usuario(dados: CadastroRequest):
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        # 1. Mudamos de 'ID' para 'CPF' (que é a sua Primary Key no SQL)
+        cursor.execute("SELECT CPF FROM USUARIO WHERE EMAIL = %s OR CPF = %s", (dados.email, dados.cpf))
+        if cursor.fetchone():
+            return False, "E-mail ou CPF já cadastrados."
+
+        # 2. Mudamos 'AVATAR_INDEX' para 'AVATAR' (conforme seu CREATE TABLE)
+        # 3. Note que não incluímos 'DESPESAS' porque ela já tem um DEFAULT 0 no seu SQL
+        sql = "INSERT INTO USUARIO (CPF, EMAIL, NOME, AVATAR) VALUES (%s, %s, %s, %s)"
+        valores = (dados.cpf, dados.email, dados.nome, dados.avatar_index)
+        
+        cursor.execute(sql, valores)
+        db.commit()
+        return True, "Usuário cadastrado com sucesso!"
+    except Exception as e:
+        print(f"Erro ao inserir no banco: {e}")
+        return False, f"Erro no banco: {str(e)}"
+    finally:
+        cursor.close()
+        db.close()
+
 def enviar_email_servidor(email_destino, codigo):
-    
-    # Colocando as credenciais diretamente (Apenas para teste!)
     seu_email = "sentryequipesuporte@gmail.com"
     sua_senha_de_app = "kzpqgxlsfledjbmu"
 
     msg = EmailMessage()
-    msg.set_content(f"Seu codigo de verificacao e: {codigo} \n Putão agora ta casado")
+    msg.set_content(f"Seu codigo de verificacao e: {codigo}")
     msg['Subject'] = 'Codigo de Acesso - Sistema Sentry'
     msg['From'] = seu_email
     msg['To'] = email_destino
 
     try:
-        # Tenta conectar ao Gmail e enviar a mensagem
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(seu_email, sua_senha_de_app)
             smtp.send_message(msg)
@@ -49,32 +98,40 @@ def enviar_email_servidor(email_destino, codigo):
         print(f"Erro técnico no envio: {e}")
         return False
 
-# --- ROTAS DA API ---
+
 
 @app.post("/api/enviar-codigo")
 async def api_enviar(request: LoginRequest):
-    
+    if not verificar_usuario_existe(request.email):
+        return {"status": "redirecionar", "url": "/cadastro", "mensagem": "Usuário não encontrado."}
+
     codigo = str(random.randint(1000, 9999)) 
-    
     envio_sucesso = enviar_email_servidor(request.email, codigo)
     
     if envio_sucesso:
-    
         armazenamento_codigos[request.email] = codigo
-        print(f"Código {codigo} guardado para {request.email}")
         return {"status": "sucesso", "mensagem": "Código enviado com sucesso!"}
     
-    raise HTTPException(status_code=500, detail="Falha ao enviar e-mail. Verifique o servidor.")
-#verificar o código
+    raise HTTPException(status_code=500, detail="Falha ao enviar e-mail.")
+
+# NOVA ROTA: CADASTRAR USUÁRIO
+@app.post("/api/usuarios")
+async def api_cadastrar(request: CadastroRequest):
+    sucesso, mensagem = cadastrar_novo_usuario(request)
+    
+    if sucesso:
+        return {"status": "sucesso", "mensagem": mensagem}
+    else:
+        # Se o e-mail já existir, retorna erro 400 que o React vai capturar
+        raise HTTPException(status_code=400, detail=mensagem)
+
 @app.post("/api/verificar-codigo")
 async def api_verificar(request: VerificarRequest):
-    
     codigo_guardado = armazenamento_codigos.get(request.email)
     if codigo_guardado and request.codigo == codigo_guardado:
         del armazenamento_codigos[request.email]
         return {"status": "sucesso", "mensagem": "Login realizado com sucesso!"}
     
-    # Se o código estiver errado ou não existir
     raise HTTPException(status_code=400, detail="Código incorreto ou expirado.")
 
 if __name__ == "__main__":
