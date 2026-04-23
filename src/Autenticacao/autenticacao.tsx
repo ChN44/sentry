@@ -1,133 +1,126 @@
-/**
- * ========================================
- * ARQUIVO: Autenticacao.tsx
- * ========================================
- * Descrição: Componente de tela de autenticação (2FA)
- * Responsabilidades:
- *   - Exibir formulário de verificação por OTP (One-Time Password)
- *   - Mascarar o email para privacidade do usuário
- *   - Renderizar 4 campos de entrada para o código de 4 dígitos
- * Rota: /autenticacao
- * ========================================
- */
-
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import type { ChangeEvent, KeyboardEvent, MouseEvent } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./Autenticacaoestilos.css";
 import sentry from "../assets/imagens/logo para icon e etc.png";
 
-/**
- * COMPONENTE: Autenticacao
- * Responsável pela verificação em duas etapas (2FA)
- */
 const Autenticacao: React.FC = () => {
-  // ===== HOOKS REACT =====
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // ===== ESTADOS E VARIÁVEIS =====
-  // Recupera o email passado pela rota de login
   const email = location.state?.email || "(Email não informado)";
+  const [codigo, setCodigo] = useState<string[]>(["", "", "", ""]);
+  const [erro, setErro] = useState<string | null>(null);
+  const [mensagemSucesso, setMensagemSucesso] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  // ===== FUNÇÕES AUXILIARES =====
-  /**
-   * Mascara o email de forma segura, mostrando apenas caracteres essenciais
-   * @param emailValue - Email a ser mascarado
-   * @returns Email mascarado no padrão: "u***@dominio.com"
-   *
-   * Exemplos:
-   * - "usuario@gmail.com" → "u***@gmail.com"
-   * - "a@domain.co" → "a***@domain.co"
-   * - "inválido" → "[Email inválido]"
-   */
+  const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
+
   const mascararEmail = (emailValue: string): string => {
-    // Validação básica
-    if (!emailValue || typeof emailValue !== "string") {
-      return "[Email não informado]";
-    }
-
-    const trimmed = emailValue.trim();
-    const atIndex = trimmed.indexOf("@");
-
-    // Verifica se contém @ (formato básico de email)
-    if (atIndex <= 0 || atIndex === trimmed.length - 1) {
-      return "[Email inválido]";
-    }
-
-    const usuario = trimmed.substring(0, atIndex);
-    const dominio = trimmed.substring(atIndex);
-
-    // Se o username tem apenas 1 caractere, mostra ele + asteriscos
-    if (usuario.length <= 1) {
-      return `${usuario}***${dominio}`;
-    }
-
-    // Caso geral: mostra primeiro caractere + asteriscos + @ + domínio
-    return `${usuario.charAt(0)}${"*".repeat(Math.max(3, usuario.length - 1))}${dominio}`;
+    if (!emailValue.includes("@")) return emailValue;
+    const [usuario, dominio] = emailValue.split("@");
+    return `${usuario.charAt(0)}***@${dominio}`;
   };
 
-  // ===== RENDER =====
+  const handleChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+    const valor = e.target.value;
+    if (!/^[0-9]*$/.test(valor)) return;
+
+    const novoCodigo = [...codigo];
+    novoCodigo[index] = valor.substring(valor.length - 1);
+    setCodigo(novoCodigo);
+    setErro(null);
+    setMensagemSucesso(null);
+
+    if (valor !== "" && index < 3) {
+      inputsRef.current[index + 1]?.focus();
+    }
+
+    if (novoCodigo.every((digito) => digito !== "")) {
+      verificarNoBackend(novoCodigo.join(""));
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === "Backspace" && codigo[index] === "" && index > 0) {
+      inputsRef.current[index - 1]?.focus();
+    }
+  };
+
+  const verificarNoBackend = async (codigoCompleto: string) => {
+    try {
+      setLoading(true);
+      const resposta = await fetch("http://localhost:8000/api/verificar-codigo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, codigo: codigoCompleto }),
+      });
+
+      if (resposta.ok) {
+        navigate("/dashboard");
+      } else {
+        const dados = await resposta.json();
+        setErro(dados.detail || "Código incorreto.");
+        setCodigo(["", "", "", ""]);
+        inputsRef.current[0]?.focus();
+      }
+    } catch (err) {
+      setErro("Erro ao conectar com o servidor.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReenviar = async (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const resposta = await fetch("http://localhost:8000/api/enviar-codigo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (resposta.ok) {
+        setMensagemSucesso("Código reenviado!");
+        setCodigo(["", "", "", ""]);
+        inputsRef.current[0]?.focus();
+      }
+    } catch (err) {
+      setErro("Erro ao reenviar.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="tela-verificacao">
-      {/* Barra de progresso da autenticação */}
-      <div className="progresso-container">
-        <div className="progresso-barra"></div>
-      </div>
-
-      {/* Container principal da tela */}
       <div className="corpo-central">
-        {/* Card do formulário de autenticação */}
         <div className="card-seguranca">
-          {/* Logo da aplicação */}
-          <div className="marca-logo">
-            <img src={sentry} alt="Logo" />
-          </div>
-
-          {/* Título da tela */}
-          <header className="cabecalho-texto">
-            <h2>Verificação</h2>
-          </header>
-
-          {/* Mensagem explicativa com email mascarado */}
-          <div className="instrucao-usuario">
-            <p>
-              Enviamos um código de 4 dígitos para: <br />
-              <strong>{mascararEmail(email)}</strong>
-            </p>
-          </div>
-
-          {/* Campos de entrada para os 4 dígitos do código OTP */}
+          <div className="marca-logo"><img src={sentry} alt="Logo" /></div>
+          <h2>Verificação</h2>
+          <p>Código enviado para: <strong>{mascararEmail(email)}</strong></p>
+          
           <div className="area-codigo-otp">
-            <input
-              type="text"
-              maxLength={1}
-              className="campo-digito"
-              placeholder="-"
-            />
-            <input
-              type="text"
-              maxLength={1}
-              className="campo-digito"
-              placeholder="-"
-            />
-            <input
-              type="text"
-              maxLength={1}
-              className="campo-digito"
-              placeholder="-"
-            />
-            <input
-              type="text"
-              maxLength={1}
-              className="campo-digito"
-              placeholder="-"
-            />
+            {codigo.map((digito, index) => (
+              <input
+                key={index}
+                ref={(el) => { inputsRef.current[index] = el; }}
+                type="text"
+                className="campo-digito"
+                value={digito}
+                onChange={(e) => handleChange(e, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                disabled={loading}
+              />
+            ))}
           </div>
 
-          {/* Link para reenviar o código */}
+          {erro && <p style={{ color: "white" }}>{erro}</p>}
+          {mensagemSucesso && <p style={{ color: "green" }}>{mensagemSucesso}</p>}
+
           <div className="acoes-rodape">
-            <p>
-              Não recebeu o código? <a href="#">Reenviar</a>
-            </p>
+            <p>Não recebeu? <a href="#" onClick={handleReenviar}>Reenviar</a></p>
           </div>
         </div>
       </div>
