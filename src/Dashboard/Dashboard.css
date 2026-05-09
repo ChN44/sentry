@@ -1,3 +1,7 @@
+/* ==========================================================================
+   1. ESTRUTURA GERAL
+   Configurações do fundo da tela e do esqueleto principal da aplicação
+   ========================================================================== */
 .container-geral {
   display: flex;
   height: 100vh;
@@ -6,6 +10,22 @@
   font-family: 'Inter', system-ui, sans-serif;
 }
 
+.conteudo-principal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.layout-do-painel {
+  display: flex;
+  gap: 24px;
+  padding: 32px 40px;
+}
+
+/* ==========================================================================
+   2. MENU LATERAL (SIDEBAR)
+   ========================================================================== */
 .menu-lateral {
   width: 250px;
   background-color: #0a0a0a;
@@ -14,143 +34,6 @@
   flex-direction: column;
   padding: 24px;
   position: relative;
-}
-
-/* Responsividade para tablets */
-@media (max-width: 768px) {
-  .menu-lateral {
-    width: 200px;
-    padding: 16px;
-  }
-  
-  .logo-do-app {
-    margin-bottom: 24px;
-  }
-  
-  .links-navegacao {
-    gap: 4px;
-  }
-  
-  .item-menu {
-    padding: 10px;
-    font-size: 13px;
-  }
-}
-
-/* Responsividade para mobile */
-@media (max-width: 480px) {
-  .container-geral {
-    flex-direction: column;
-  }
-  
-  .menu-lateral {
-    width: 100%;
-    flex-direction: row;
-    padding: 12px;
-    border-right: none;
-    border-bottom: 1px solid #1a1a1a;
-    height: auto;
-  }
-  
-  .logo-do-app {
-    margin-bottom: 0;
-  }
-  
-  .links-navegacao {
-    flex-direction: row;
-    gap: 8px;
-    overflow-x: auto;
-    flex: 1;
-  }
-  
-  .item-menu {
-    white-space: nowrap;
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-  
-  .conteudo-principal {
-    overflow-x: hidden;
-  }
-  
-  .topo-da-pagina {
-    padding: 16px 20px 0;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-  
-  .saudacao-usuario h1 {
-    font-size: 20px;
-  }
-  
-  .botoes-topo {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .layout-do-painel {
-    flex-direction: column;
-    gap: 16px;
-    padding: 16px 20px;
-  }
-  
-  .coluna-ia {
-    width: 100%;
-    height: 300px;
-  }
-  
-  .grade-resumo {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  
-  .valor-cartao {
-    font-size: 20px;
-  }
-  
-  .formulario-transacao {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  
-  .acoes-extrato {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .botao-adicionar {
-    width: 100%;
-  }
-  
-  .busca-extrato {
-    width: 100%;
-  }
-  
-  .tabela-financeira th,
-  .tabela-financeira td {
-    padding: 8px 0;
-    font-size: 12px;
-  }
-}
-
-/* Responsividade para tablets (vertical) */
-@media (max-width: 1024px) {
-  .grade-resumo {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .formulario-transacao {
-    grid-template-columns: 1fr 1fr;
-  }
-  
-  .layout-do-painel {
-    gap: 16px;
-  }
-  
-  .coluna-ia {
-    width: 280px;
-  }
 }
 
 .logo-do-app {
@@ -162,8 +45,6 @@
   color: #ffffff;
   margin-bottom: 40px;
 }
-
-
 
 .links-navegacao {
   display: flex;
@@ -185,18 +66,15 @@
   transition: all 0.2s ease-in-out;
 }
 
-.item-menu:hover, .item-menu.ativo {
+.item-menu:hover, 
+.item-menu.ativo {
   background-color: #1a1a1a;
   color: #ffffff;
 }
 
-.conteudo-principal {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
-
+/* ==========================================================================
+   3. TOPO DA PÁGINA (HEADER)
+   ========================================================================== */
 .topo-da-pagina {
   display: flex;
   justify-content: space-between;
@@ -247,12 +125,9 @@
   background: #262626;
 }
 
-.layout-do-painel {
-  display: flex;
-  gap: 24px;
-  padding: 32px 40px;
-}
-
+/* ==========================================================================
+   4. ÁREA FINANCEIRA (CARDS DE RESUMO E INÍCIO)
+   ========================================================================== */
 .coluna-financeira {
   flex: 1;
   display: flex;
@@ -260,8 +135,10 @@
   gap: 24px;
 }
 
-.coluna-ia {
-  width: 320px;
+.grade-resumo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
 .cartao-info {
@@ -269,12 +146,6 @@
   border: 1px solid #1a1a1a;
   border-radius: 16px;
   padding: 24px;
-}
-
-.grade-resumo {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
 }
 
 .titulo-cartao {
@@ -288,30 +159,17 @@
   color: #ffffff;
 }
 
-.cor-verde { color: #10b981 !important; }
-.cor-vermelha { color: #ef4444 !important; }
-.texto-direita { text-align: right; }
-.fonte-bold { font-weight: 600; color: #ffffff; }
-
 .titulo-sessao {
   margin: 0 0 20px 0;
   font-size: 16px;
   color: #ffffff;
 }
 
-.botao-link {
-  background: none;
-  border: none;
-  color: #7c3aed;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.botao-link:hover {
-  text-decoration: underline;
-}
-
-.topo-lista, .topo-lista-extrato {
+/* ==========================================================================
+   5. TABELAS E EXTRATO
+   ========================================================================== */
+.topo-lista, 
+.topo-lista-extrato {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -323,7 +181,8 @@
   border-collapse: collapse;
 }
 
-.tabela-financeira th, .tabela-financeira td {
+.tabela-financeira th, 
+.tabela-financeira td {
   padding: 12px 0;
   border-bottom: 1px solid #1a1a1a;
   font-size: 14px;
@@ -340,24 +199,6 @@
   display: flex;
   gap: 12px;
   align-items: center;
-}
-
-.botao-adicionar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #7c3aed;
-  color: #ffffff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s;
-}
-
-.botao-adicionar:hover {
-  background: #6d28d9;
 }
 
 .busca-extrato {
@@ -378,6 +219,9 @@
   font-size: 14px;
 }
 
+/* ==========================================================================
+   6. FORMULÁRIO DE NOVA TRANSAÇÃO (EXTRATO)
+   ========================================================================== */
 .formulario-transacao {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr auto;
@@ -387,17 +231,6 @@
   border-radius: 12px;
   margin-bottom: 20px;
   border-left: 4px solid #7c3aed;
-}
-
-.erro-mensagem {
-  grid-column: 1 / -1;
-  background: rgba(239, 68, 68, 0.1);
-  color: #f87171;
-  padding: 12px 14px;
-  border-radius: 8px;
-  border-left: 3px solid #ef4444;
-  font-size: 14px;
-  margin-bottom: 10px;
 }
 
 .campo-formulario {
@@ -455,14 +288,22 @@
   opacity: 0.7;
 }
 
-.etiqueta-generica {
-  background: #222;
-  color: #aaa;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  text-transform: uppercase;
-  border: 1px solid #333;
+.botao-adicionar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #7c3aed;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.botao-adicionar:hover {
+  background: #6d28d9;
 }
 
 .botao-excluir {
@@ -481,6 +322,25 @@
 .botao-excluir:hover {
   background: rgba(239, 68, 68, 0.1);
   color: #f87171;
+}
+
+.botao-link {
+  background: none;
+  border: none;
+  color: #7c3aed;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.botao-link:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   7. CHAT DA IA (COLUNA DIREITA)
+   ========================================================================== */
+.coluna-ia {
+  width: 320px;
 }
 
 .caixa-chat-ia {
@@ -551,7 +411,280 @@
   background: #6d28d9;
 }
 
-/* Acessibilidade e utilidades */
+/* ==========================================================================
+   8. TELA DE PLANEJAMENTO (GERAL)
+   ========================================================================== */
+.planejamento-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.planejamento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.planejamento-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 22px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.badges-container {
+  display: flex;
+  gap: 12px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.badge-perigo {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-alerta {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.planejamento-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card-plan {
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-roxo {
+  background-color: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+}
+.card-roxo h3 { color: #a78bfa; font-size: 14px; margin: 0; font-weight: 500; }
+.card-roxo p { color: #c4b5fd; font-size: 28px; margin: 0; font-weight: bold; }
+
+.card-verde {
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+.card-verde h3 { color: #34d399; font-size: 14px; margin: 0; font-weight: 500; }
+.card-verde p { color: #6ee7b7; font-size: 28px; margin: 0; font-weight: bold; }
+
+.card-laranja {
+  background-color: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+.card-laranja h3 { color: #fbbf24; font-size: 14px; margin: 0; font-weight: 500; }
+.card-laranja p { color: #fcd34d; font-size: 28px; margin: 0; font-weight: bold; }
+
+/* Formulário com borda tracejada */
+.box-tracejado {
+  border: 2px dashed #333;
+  border-radius: 16px;
+  padding: 24px;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.box-tracejado h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: #fff;
+  margin: 0 0 20px 0;
+}
+
+.form-planejamento {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.input-plan {
+  background-color: #1a1a1a;
+  border: 1px solid #262626;
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-plan:focus {
+  border-color: #7c3aed;
+}
+
+.btn-adicionar-plan {
+  background-color: #7c3aed;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+.btn-adicionar-plan:hover {
+  background-color: #6d28d9;
+}
+
+.lista-planejamento h3 {
+  font-size: 16px;
+  color: #fff;
+  margin: 0 0 20px 0;
+}
+
+.estado-vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  color: #666;
+  gap: 16px;
+}
+
+/* ==========================================================================
+   9. ESTILOS DOS CARDS DA LISTA DE METAS (Planejamento)
+   ========================================================================== */
+.meta-card-item {
+  padding: 20px;
+  background: #0f0f0f;
+  border-radius: 12px;
+  border-left: 4px solid #7c3aed;
+  border-top: 1px solid #1a1a1a;
+  border-right: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.meta-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta-card-header h4 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.meta-card-valores {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.valor-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.valor-label {
+  font-size: 12px;
+  color: #737373;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.valor-atual {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d4d4d4;
+}
+
+/* A Mágica da Barra de Progresso */
+.barra-progresso-fundo {
+  width: 100%;
+  height: 8px;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.barra-progresso-preenchimento {
+  height: 100%;
+  background: linear-gradient(90deg, #6d28d9 0%, #a78bfa 100%);
+  border-radius: 10px;
+  transition: width 0.6s ease-in-out;
+}
+
+.meta-card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #737373;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   10. UTILIDADES GERAIS E MENSAGENS DE ERRO
+   ========================================================================== */
+.cor-verde { color: #10b981 !important; }
+.cor-vermelha { color: #ef4444 !important; }
+.texto-direita { text-align: right; }
+.fonte-bold { font-weight: 600; color: #ffffff; }
+
+.etiqueta-generica {
+  background: #222;
+  color: #aaa;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  text-transform: uppercase;
+  border: 1px solid #333;
+}
+
+.erro-mensagem {
+  grid-column: 1 / -1;
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border-left: 3px solid #ef4444;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -569,4 +702,164 @@
   color: #737373;
   padding: 32px 12px !important;
   font-style: italic;
+}
+
+/* ==========================================================================
+   11. RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
+
+/* Telas Médias (Tablets) */
+@media (max-width: 1024px) {
+  .layout-do-painel {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
+  
+  .coluna-ia {
+    width: 100%;
+    height: 400px;
+  }
+
+  .grade-resumo {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .formulario-transacao,
+  .form-planejamento {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-lateral {
+    width: 200px;
+    padding: 16px;
+  }
+  
+  .logo-do-app {
+    margin-bottom: 24px;
+  }
+  
+  .links-navegacao {
+    gap: 4px;
+  }
+  
+  .item-menu {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+/* Telas Pequenas (Mobile) */
+@media (max-width: 480px) {
+  .container-geral {
+    flex-direction: column;
+  }
+  
+  /* Menu inferior Mobile */
+  .menu-lateral {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 20px;
+    border-right: none;
+    border-bottom: 1px solid #1a1a1a;
+    height: auto;
+  }
+  
+  .logo-do-app {
+    display: none;
+  }
+  
+  .links-navegacao {
+    flex-direction: row;
+    gap: 12px;
+    overflow-x: auto;
+    flex: 1;
+    padding-bottom: 4px; 
+  }
+  
+  .item-menu {
+    white-space: nowrap;
+    padding: 8px 16px;
+    font-size: 12px;
+    background-color: #111;
+    border-radius: 20px;
+  }
+  
+  .conteudo-principal {
+    overflow-x: hidden;
+  }
+  
+  .topo-da-pagina {
+    padding: 20px 20px 0;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .saudacao-usuario h1 {
+    font-size: 20px;
+  }
+  
+  .botoes-topo {
+    gap: 12px;
+  }
+  
+  .layout-do-painel {
+    padding: 16px 20px;
+    gap: 24px;
+  }
+  
+  .grade-resumo {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .valor-cartao {
+    font-size: 24px;
+  }
+  
+  /* Ajustes dos Formulários no Mobile */
+  .formulario-transacao,
+  .form-planejamento {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .acoes-extrato {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .botao-adicionar, 
+  .busca-extrato {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Tabelas mais limpas no Mobile */
+  .tabela-financeira th:nth-child(3),
+  .tabela-financeira td:nth-child(3) {
+    display: none;
+  }
+
+  .tabela-financeira th,
+  .tabela-financeira td {
+    padding: 12px 0;
+    font-size: 13px;
+  }
+
+  /* Ajustes do Planejamento no Mobile */
+  .planejamento-header { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 16px; 
+  }
+  
+  .planejamento-cards { 
+    grid-template-columns: 1fr; 
+  }
 }

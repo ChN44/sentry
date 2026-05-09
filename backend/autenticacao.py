@@ -38,7 +38,7 @@ armazenamento_codigos = {}
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost", # Sem os dois pontos!
+        host="localhost", 
         user="root",
         password="",
         database="SENTRY"
