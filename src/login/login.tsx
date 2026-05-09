@@ -84,10 +84,7 @@ const Login: React.FC = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(emailValue);
   };
-
-  /**
-   * FUNÇÃO: handleComecar (LÓGICA DE BACKEND ATUALIZADA)
-   */
+ // ===== FUNÇÕES da para ai =====
   const handleComecar = async () => {
     if (!isValidEmail(email)) {
       setNotificacao({
@@ -110,14 +107,8 @@ const Login: React.FC = () => {
 
       const dados = await resposta.json();
 
-      if (resposta.ok) {
-        // Se o backend retornar status de redirecionamento (usuário não existe)
-        if (dados.status === "redirecionar") {
-          navigate("/cadastro", { state: { email } });
-        } else {
-          // Caso padrão: usuário existe e código foi enviado
-          navigate("/autenticacao", { state: { email } });
-        }
+      if (resposta.ok && dados.status === "sucesso") {
+        navigate("/autenticacao", { state: { email } });
       } else {
         setNotificacao({
           tipo: "erro",

@@ -38,7 +38,7 @@ armazenamento_codigos = {}
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost", # Corrigido: removido o ":"
+        host="localhost", # Sem os dois pontos!
         user="root",
         password="",
         database="SENTRY"
@@ -93,11 +93,11 @@ def enviar_email_servidor(email_destino, codigo):
         print(f"Erro técnico no envio: {e}")
         return False
 
+# --- ROTAS DA API ---
+
 @app.post("/api/enviar-codigo")
 async def api_enviar(request: LoginRequest):
-    if not verificar_usuario_existe(request.email):
-        return {"status": "redirecionar", "url": "/cadastro", "mensagem": "Usuário não encontrado."}
-
+    
     codigo = str(random.randint(1000, 9999)) 
     envio_sucesso = enviar_email_servidor(request.email, codigo)
     
@@ -107,20 +107,29 @@ async def api_enviar(request: LoginRequest):
     
     raise HTTPException(status_code=500, detail="Falha ao enviar e-mail.")
 
+@app.post("/api/verificar-codigo")
+async def api_verificar(request: VerificarRequest):
+    codigo_guardado = armazenamento_codigos.get(request.email)
+    
+    if codigo_guardado and request.codigo == codigo_guardado:
+        usuario_ja_existe = verificar_usuario_existe(request.email)
+        
+        del armazenamento_codigos[request.email]
+        
+        return {
+            "status": "sucesso", 
+            "existe": usuario_ja_existe, 
+            "mensagem": "Código validado!"
+        }
+        
+    raise HTTPException(status_code=400, detail="Código incorreto ou expirado.")
+
 @app.post("/api/usuarios")
 async def api_cadastrar(request: CadastroRequest):
     sucesso, mensagem = cadastrar_novo_usuario(request)
     if sucesso:
         return {"status": "sucesso", "mensagem": mensagem}
     raise HTTPException(status_code=400, detail=mensagem)
-
-@app.post("/api/verificar-codigo")
-async def api_verificar(request: VerificarRequest):
-    codigo_guardado = armazenamento_codigos.get(request.email)
-    if codigo_guardado and request.codigo == codigo_guardado:
-        del armazenamento_codigos[request.email]
-        return {"status": "sucesso", "mensagem": "Login realizado com sucesso!"}
-    raise HTTPException(status_code=400, detail="Código incorreto ou expirado.")
 
 if __name__ == "__main__":
     import uvicorn

@@ -46,7 +46,7 @@ const Autenticacao: React.FC = () => {
       inputsRef.current[index - 1]?.focus();
     }
   };
-
+ // ===== Mudei a poha da verificação de lugar =====
   const verificarNoBackend = async (codigoCompleto: string) => {
     try {
       setLoading(true);
@@ -56,10 +56,16 @@ const Autenticacao: React.FC = () => {
         body: JSON.stringify({ email, codigo: codigoCompleto }),
       });
 
+      const dados = await resposta.json();
+
       if (resposta.ok) {
-        navigate("/dashboard");
+        if (dados.existe) {
+
+          navigate("/dashboard");
+        } else {
+          navigate("/cadastro", { state: { email } });
+        }
       } else {
-        const dados = await resposta.json();
         setErro(dados.detail || "Código incorreto.");
         setCodigo(["", "", "", ""]);
         inputsRef.current[0]?.focus();
@@ -107,6 +113,7 @@ const Autenticacao: React.FC = () => {
                 key={index}
                 ref={(el) => { inputsRef.current[index] = el; }}
                 type="text"
+                maxLength={1}
                 className="campo-digito"
                 value={digito}
                 onChange={(e) => handleChange(e, index)}
@@ -116,11 +123,11 @@ const Autenticacao: React.FC = () => {
             ))}
           </div>
 
-          {erro && <p style={{ color: "white" }}>{erro}</p>}
+          {erro && <p style={{ color: "red" }}>{erro}</p>}
           {mensagemSucesso && <p style={{ color: "green" }}>{mensagemSucesso}</p>}
 
           <div className="acoes-rodape">
-            <p>Não recebeu? <a href="#" onClick={handleReenviar}>Reenviar</a></p>
+            <p>Não recebeu? <a href="#" onClick={handleReenviar} style={{ pointerEvents: loading ? "none" : "auto" }}>{loading ? "Enviando..." : "Reenviar"}</a></p>
           </div>
         </div>
       </div>
